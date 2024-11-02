@@ -99,7 +99,8 @@ const Home = () => {
   // const [date, setDate] = useState('');
   const [predictionDate, setPredictionDate] = useState("");
   const [predictionResult, setPredictionResult] = useState(null);
-
+  const [growthStage, setGrowthStage] = useState("")
+  const [irrigationType, setIrrigationType] = useState("")
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
     
@@ -206,6 +207,21 @@ const Home = () => {
           <select value={cropSelected} onChange={(e) => setCropSelected(e.target.value)}>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
+          </select>
+        </div>
+        <div>
+          <label>Growth Stage:</label>
+          <select value={growthStage} onChange={(e) => setGrowthStage(e.target.value)}>
+            <option value="Nursery">Nursery</option>
+            <option value="Transplanting">Transplanting</option>
+            <option value="Flowering">Flowering</option>
+            <option value="Mature">Mature</option>
+          </select>
+        </div>
+        <div>
+          <label>Irrigation Type: </label>
+          <select value={irrigationType} onChange={(e) => setIrrigationType(e.target.value)}>
+            <option value="Submersion">Submersion</option>
           </select>
         </div>
         {/* <div>
