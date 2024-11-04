@@ -300,7 +300,7 @@ const Home = () => {
             onChange={(e) => setPredictionDate(e.target.value)}
           />
         </div>
-        <button type="submit">Get Prediction</button>
+        <button type="submit">Get Irrigation</button>
       </form>
 
       {predictionResult && (
