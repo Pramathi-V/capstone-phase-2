@@ -93,14 +93,35 @@ const Home = () => {
   const [longitude, setLongitude] = useState("");
   const [farmArea, setFarmArea] = useState("");
   const [cropSelected, setCropSelected] = useState("Yes");
-  // const [predictionDate, setPredictionDate] = useState("");
-  // const [predictionResult, setPredictionResult] = useState(null);
-  // const [district, setDistrict] = useState('');
-  // const [date, setDate] = useState('');
   const [predictionDate, setPredictionDate] = useState("");
   const [predictionResult, setPredictionResult] = useState(null);
   const [growthStage, setGrowthStage] = useState("")
   const [irrigationType, setIrrigationType] = useState("")
+
+  // new
+  const [date, setDate] = useState('');
+  const [district, setDistrict] = useState('');
+  const [prediction, setPrediction] = useState(null);
+  const [error, setError] = useState('');
+
+    const getWeatherPrediction = async () => {
+      setError(null); // Clear previous errors
+      try {
+          const response = await axios.post('http://localhost:5001/predict', {
+              date: date,
+              district: district
+          });
+          setPrediction(response.data);
+      } catch (err) {
+          if (err.response) {
+              setError(err.response.data.error); // Capture error message from the response
+          } else {
+              setError('An unexpected error occurred.');
+          }
+      }
+  };
+    // new
+
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
     
@@ -163,6 +184,35 @@ const Home = () => {
   return (
     <div>
       <h2>Home</h2>
+      {/* new */}
+      <div>
+            <h1>Weather Prediction</h1>
+            <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+            />
+            <input
+                type="text"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                placeholder="Enter District"
+                required
+            />
+            <button onClick={getWeatherPrediction}>Get Weather Prediction</button>
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            {prediction && (
+                <div>
+                    <h2>Prediction for {prediction.district} on {prediction.date}:</h2>
+                    <p>Predicted Rain: {prediction.predicted_rain.toFixed(2)} mm</p>
+                    {/* Add more fields here if your model predicts additional parameters */}
+                </div>
+            )}
+        </div> 
+            {/* new */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Crop Type:</label>
