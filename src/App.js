@@ -7,6 +7,7 @@ import CropRecommendation from "./CropRecommendation";
 import Irrigation from "./Irrigation"; // Add more components as needed
 import CropGrowthCycle from "./CropGrowthCycle";
 import AnomalyDetection from "./AnomalyDetection";
+import CropData from './CropData';
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
             <li>
               <Link to="/anomaly-detection">Anomaly Detection</Link>
             </li>
+            <li>
+              <Link to="/crop-data">Crop Yield</Link>
+            </li>
           </ul>
         </nav>
 
@@ -38,6 +42,7 @@ function App() {
           <Route path="/irrigation" element={<Irrigation />} />
           <Route path="/crop-growth-cycle" element={<CropGrowthCycle />} />
           <Route path="/anomaly-detection" element={<AnomalyDetection />} />
+          <Route path="/crop-data" element={<CropData />} />
         </Routes>
       </div>
     </Router>
