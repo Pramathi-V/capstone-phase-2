@@ -95,6 +95,32 @@
 // export default App;
 import React, { useState } from 'react';
 
+const kharifIrrigationData = [
+  { month: 'May', standard_week: 22, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
+  { month: 'June', standard_week: 23, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
+  { month: 'June', standard_week: 24, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
+  { month: 'June', standard_week: 25, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
+  { month: 'June', standard_week: 26, phenophase: 'Seedling (Transplanting)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
+  { month: 'July', standard_week: 27, phenophase: 'Seedling (Transplanting)', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'July', standard_week: 28, phenophase: 'Seedling (Transplanting)', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'July', standard_week: 29, phenophase: 'Seedling (Transplanting)', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'July', standard_week: 30, phenophase: 'Tillering to Active Tillering', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'August', standard_week: 31, phenophase: 'Tillering to Active Tillering', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'August', standard_week: 32, phenophase: 'Tillering to Active Tillering', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'August', standard_week: 33, phenophase: 'Tillering to Active Tillering', duration_in_days: '66-70', irrigation: 54, stage: 'Development stage' },
+  { month: 'August', standard_week: 34, phenophase: 'Panicle Initiation to Booting', duration_in_days: '66-70', irrigation: 54, stage: 'Reproductive stage' },
+  { month: 'August', standard_week: 35, phenophase: 'Panicle Initiation to Booting', duration_in_days: '66-70', irrigation: 54, stage: 'Reproductive stage' },
+  { month: 'September', standard_week: 36, phenophase: 'Panicle Initiation to Booting', duration_in_days: '25-28', irrigation: 45, stage: 'Reproductive stage' },
+  { month: 'September', standard_week: 37, phenophase: 'Booting to Heading', duration_in_days: '25-28', irrigation: 45, stage: 'Reproductive stage' },
+  { month: 'September', standard_week: 38, phenophase: 'Booting to Heading', duration_in_days: '25-28', irrigation: 45, stage: 'Reproductive stage' },
+  { month: 'September', standard_week: 39, phenophase: 'Booting to Heading', duration_in_days: '25-28', irrigation: 45, stage: 'Late stage' },
+  { month: 'October', standard_week: 40, phenophase: 'Booting to Heading', duration_in_days: '28-30', irrigation: 40, stage: 'Late stage' },
+  { month: 'October', standard_week: 41, phenophase: 'Booting to Heading', duration_in_days: '28-30', irrigation: 40, stage: 'Late stage' },
+  { month: 'October', standard_week: 42, phenophase: 'Heading to Physiological maturity', duration_in_days: '28-30', irrigation: 40, stage: 'Late stage' },
+  { month: 'October', standard_week: 43, phenophase: 'Heading to Physiological maturity', duration_in_days: '28-30', irrigation: 40, stage: 'Late stage' },
+  { month: 'November', standard_week: 44, phenophase: 'Heading to Physiological maturity', duration_in_days: '28-30', irrigation: 40, stage: 'Late stage' },
+];
+// rabi
 const irrigationData = [
   { month: 'December', standard_week: 49, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
   { month: 'December', standard_week: 50, phenophase: 'Seedling (Nursery)', duration_in_days: '30-35', irrigation: 36, stage: 'Initial stage' },
