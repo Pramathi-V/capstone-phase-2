@@ -28,11 +28,10 @@ const Home = () => {
   const [district, setDistrict] = useState("");
   const [districtImage, setDistrictImage] = useState("");
   const [farmArea, setFarmArea] = useState("");
-
   const [predictionDate, setPredictionDate] = useState("");
   const [predictionResult, setPredictionResult] = useState(null);
   const [growthStage, setGrowthStage] = useState("");
-  const [irrigationType, setIrrigationType] = useState("");
+
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
 

@@ -2,9 +2,9 @@ import React from "react";
 import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./Home"; // Your Home component
+import Home from "./Home";
 import CropRecommendation from "./CropRecommendation";
-import Irrigation from "./Irrigation"; // Add more components as needed
+import Irrigation from "./Irrigation";
 import CropGrowthCycle from "./CropGrowthCycle";
 import AnomalyDetection from "./AnomalyDetection";
 import CropData from "./CropData";
