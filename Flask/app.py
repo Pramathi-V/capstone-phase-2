@@ -296,7 +296,7 @@ def predict():
     # Extract the Rain prediction (assuming it's the first output)
     predicted_rain = prediction[0][0]
 
-    predicted_rain = float(predicted_rain)  # Convert to Python float
+    predicted_rain = abs(float(predicted_rain))  # Convert to Python float
 
     # Return the prediction as JSON
     return jsonify({'district': district, 'date': date_str, 'predicted_rain': predicted_rain})

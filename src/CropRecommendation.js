@@ -16,6 +16,8 @@ import rabiImage1 from "./assets/Rabi_Irrigation.png"; // Adjust the path to you
 import rabiImage2 from "./assets/rabi_process.png"; // Adjust the path to your Rabi image
 import kharifImage2 from "./assets/kharif_process.png"; // Adjust the path to your Kharif image
 import kharifImage1 from "./assets/Kharif_weather.png"; // Adjust the path to your Kharif image
+import rabiImageCrop from "./assets/Rabi_crop.png"; // Adjust the path to your Rabi image
+import kharifImageCrop from "./assets/Kharif_crop.png";
 
 const CropRecommendation = () => {
   const [season, setSeason] = useState("Rabi"); // State to store the selected season
@@ -29,19 +31,22 @@ const CropRecommendation = () => {
     if (season === "Rabi") {
       return (
         <>
-          <img src={growthSatge} alt="growth stages" style={{ width: '500px', margin: '10px' }} />
+          <img src={rabiImageCrop} alt="Rabi Crop Details" style={{ width: '500px', margin: '10px' }} />
+          {/* <img src={growthSatge} alt="growth stages" style={{ width: '500px', margin: '10px' }} /> */}
           <br></br>
-          <img src={rabiImage1} alt="Rabi Crop 1" style={{ width: '500px', margin: '10px' }} />
-          <img src={rabiImage2} alt="Rabi Crop 2" style={{ width: '500px', margin: '10px' }} />
+          <h4>Crop Weather Calander</h4>
+          <img src={rabiImage1} alt="Rabi Crop 1" style={{ height: '500px', margin: '10px' }} />
+          <img src={rabiImage2} alt="Rabi Crop 2" style={{ height: '500px', margin: '10px' }} />
         </>
       );
     } else if (season === "Kharif") {
       return (
         <>
-          <img src={growthSatge} alt="growth stages" style={{ width: '500px', margin: '10px' }} />
+          <img src={kharifImageCrop} alt="Kharif Crop Details" style={{ width: '500px', margin: '10px' }} />
           <br></br>
-          <img src={kharifImage1} alt="Kharif Crop 1" style={{ width: '500px', margin: '10px' }} />
-          <img src={kharifImage2} alt="Kharif Crop 2" style={{ width: '500px', margin: '10px' }} />
+          <h4>Crop Weather Calander</h4>
+          <img src={kharifImage1} alt="Kharif Crop 1" style={{ height: '500px', margin: '10px' }} />
+          <img src={kharifImage2} alt="Kharif Crop 2" style={{ height: '500px', margin: '10px' }} />
         </>
       );
     }

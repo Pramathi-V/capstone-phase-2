@@ -244,6 +244,7 @@ const Irrigation = () => {
     });
     const [editable, setEditable] = useState(false);
     const [netIrrigation, setNetIrrigation] = useState(null);
+    
     const calculateNetIrrigation = () => {
       const month = new Date(date).toLocaleString('default', { month: 'long' });
       const stage = "Specify the stage based on your logic"; // Replace with logic to determine the stage
