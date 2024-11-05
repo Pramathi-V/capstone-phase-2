@@ -140,9 +140,11 @@ const Home = () => {
             onChange={handleLongitudeChange}
             placeholder="Enter longitude"
           />
-          <button type="button" onClick={useCurrentLocation}>
-            Use Current Location
-          </button>
+          <div>
+            <button type="button" onClick={useCurrentLocation}>
+              Use Current Location
+            </button>
+          </div>
         </div>
         <div style={{ textAlign: "center", marginTop: "10px" }}>
           <label>District:</label>
