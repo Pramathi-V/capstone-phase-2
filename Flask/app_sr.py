@@ -65,7 +65,7 @@ def predict():
     # Extract the surface runoff prediction (assuming it's the first output)
     predicted_sr = prediction[0][0]
 
-    predicted_sr = (float(predicted_sr)/10000)*random.uniform(0, 0.5) # Convert to Python float
+    predicted_sr = (abs(float(predicted_sr)/10000))*random.uniform(0, 0.5) # Convert to Python float
 
     # Return the prediction as JSON
     return jsonify({
