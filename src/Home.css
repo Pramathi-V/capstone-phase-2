@@ -30,3 +30,29 @@ form button {
 form button:hover {
     background-color: #45a049;
 }
+.home-container {
+    position: relative; /* Positioning context for child elements */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide any overflow caused by fixed positioning */
+  }
+  
+  .background-image {
+    background-image: url('./paddy-fields-1024x636.jpg'); /* Path to your image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+    position: fixed; /* Fix the image in the background */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    bottom: 0; /* Align to the bottom */
+    opacity: 0.5; /* Set the desired opacity for the fade effect */
+    z-index: -1; /* Send the image behind the content */
+  }
+  
+  .content {
+    position: relative; /* Ensure content is above the background */
+    z-index: 1; /* Bring the content above the background image */
+    padding: 20px; /* Add some padding for spacing */
+    color: white; /* Change text color for visibility */
+  }
+  

@@ -7,7 +7,7 @@ import CropRecommendation from "./CropRecommendation";
 import Irrigation from "./Irrigation"; // Add more components as needed
 import CropGrowthCycle from "./CropGrowthCycle";
 import AnomalyDetection from "./AnomalyDetection";
-import CropData from './CropData';
+import CropData from "./CropData";
 
 function App() {
   return (

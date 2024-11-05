@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
 // Import all images from the District_Map folder
@@ -20,6 +21,7 @@ const importDistrictImages = () => {
 const districtImages = importDistrictImages();
 
 const Home = () => {
+  const navigate = useNavigate();
   const [cropType, setCropType] = useState("Rice-Kharif");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -35,6 +37,7 @@ const Home = () => {
   const [error, setError] = useState("");
 
   const DISTRCT_URL = "http://localhost:5006"; // Main server URL
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -218,6 +221,20 @@ const Home = () => {
           <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
         </div>
       )}
+
+      {/* Navigation Buttons */}
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <button onClick={() => navigate("/crop-data")}>
+          Maximum Crop Yield
+        </button>
+        <button onClick={() => navigate("/irrigation")}>Irrigation</button>
+        <button onClick={() => navigate("/crop-growth-cycle")}>
+          Preventative methods
+        </button>
+        <button onClick={() => navigate("/anomaly-detection")}>
+          Anomaly Detection
+        </button>
+      </div>
     </div>
   );
 };
