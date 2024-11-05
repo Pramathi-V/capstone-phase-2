@@ -195,15 +195,7 @@ const Home = () => {
             <option value="Mature">Mature</option>
           </select>
         </div>
-        <div>
-          <label>Irrigation Type: </label>
-          <select
-            value={irrigationType}
-            onChange={(e) => setIrrigationType(e.target.value)}
-          >
-            <option value="Submersion">Submersion</option>
-          </select>
-        </div>
+
         <div>
           <label>Prediction Date:</label>
           <input
