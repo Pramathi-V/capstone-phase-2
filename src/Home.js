@@ -38,23 +38,6 @@ const Home = () => {
   const BASE_URL = "http://localhost:5006"; // Main server URL
   const WEATHER_URL = "http://localhost:5001"; // Weather prediction server URL
 
-  const getWeatherPrediction = async () => {
-    setError(null);
-    try {
-      const response = await axios.post(`${WEATHER_URL}/predict`, {
-        date,
-        district,
-      });
-      setWeatherPrediction(response.data);
-    } catch (err) {
-      if (err.response) {
-        setError(err.response.data.error);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -131,39 +114,6 @@ const Home = () => {
 
   return (
     <div>
-      <h2>Home</h2>
-
-      {/* Weather Prediction Section */}
-      <div>
-        <h1>Weather Prediction</h1>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-          placeholder="Enter District"
-          required
-        />
-        <button onClick={getWeatherPrediction}>Get Weather Prediction</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {weatherPrediction && (
-          <div>
-            <h2>
-              Prediction for {weatherPrediction.district} on{" "}
-              {weatherPrediction.date}:
-            </h2>
-            <p>
-              Predicted Rain: {weatherPrediction.predicted_rain.toFixed(2)} mm
-            </p>
-          </div>
-        )}
-      </div>
-
       {/* Main Form Section */}
       <form onSubmit={handleSubmit}>
         <div>
