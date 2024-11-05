@@ -32,16 +32,13 @@ const Home = () => {
   const [growthStage, setGrowthStage] = useState("");
   const [irrigationType, setIrrigationType] = useState("");
   const [date, setDate] = useState("");
-  const [weatherPrediction, setWeatherPrediction] = useState(null);
   const [error, setError] = useState("");
 
-  const BASE_URL = "http://localhost:5006"; // Main server URL
-  const WEATHER_URL = "http://localhost:5001"; // Weather prediction server URL
-
+  const DISTRCT_URL = "http://localhost:5006"; // Main server URL
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/predict`, {
+      const response = await axios.post(`${DISTRCT_URL}/predict`, {
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude),
         date: predictionDate,
@@ -75,7 +72,7 @@ const Home = () => {
 
   const fetchDistrict = async (lat, lon) => {
     try {
-      const response = await axios.post(`${BASE_URL}/find_district`, {
+      const response = await axios.post(`${DISTRCT_URL}/find_district`, {
         latitude: lat,
         longitude: lon,
       });
