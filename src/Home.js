@@ -28,7 +28,7 @@ const Home = () => {
   const [district, setDistrict] = useState("");
   const [districtImage, setDistrictImage] = useState("");
   const [farmArea, setFarmArea] = useState("");
-  const [cropSelected, setCropSelected] = useState("Yes");
+
   const [predictionDate, setPredictionDate] = useState("");
   const [predictionResult, setPredictionResult] = useState(null);
   const [growthStage, setGrowthStage] = useState("");
@@ -173,16 +173,7 @@ const Home = () => {
             placeholder="Enter farm area"
           />
         </div>
-        <div>
-          <label>Do you have a crop selected?</label>
-          <select
-            value={cropSelected}
-            onChange={(e) => setCropSelected(e.target.value)}
-          >
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-        </div>
+
         <div>
           <label>Growth Stage:</label>
           <select
