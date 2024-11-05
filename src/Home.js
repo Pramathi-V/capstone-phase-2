@@ -2,45 +2,63 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Home.css";
 
+// Import all images from the District_Map folder
+const importDistrictImages = () => {
+  const images = {};
+  const context = require.context(
+    "./District_Map",
+    false,
+    /\.(png|jpe?g|svg)$/
+  );
+  context.keys().forEach((item) => {
+    const imageName = item.replace("./", "");
+    images[imageName.split(".")[0]] = context(item);
+  });
+  return images;
+};
+
+const districtImages = importDistrictImages();
+
 const Home = () => {
   const [cropType, setCropType] = useState("Rice-Kharif");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [district, setDistrict] = useState("");
+  const [districtImage, setDistrictImage] = useState("");
   const [farmArea, setFarmArea] = useState("");
   const [cropSelected, setCropSelected] = useState("Yes");
   const [predictionDate, setPredictionDate] = useState("");
   const [predictionResult, setPredictionResult] = useState(null);
   const [growthStage, setGrowthStage] = useState("");
   const [irrigationType, setIrrigationType] = useState("");
-
-  // new
   const [date, setDate] = useState("");
-  const [district, setDistrict] = useState("");
-  const [prediction, setPrediction] = useState(null);
+  const [weatherPrediction, setWeatherPrediction] = useState(null);
   const [error, setError] = useState("");
 
+  const BASE_URL = "http://localhost:5006"; // Main server URL
+  const WEATHER_URL = "http://localhost:5001"; // Weather prediction server URL
+
   const getWeatherPrediction = async () => {
-    setError(null); // Clear previous errors
+    setError(null);
     try {
-      const response = await axios.post("http://localhost:5001/predict", {
-        date: date,
-        district: district,
+      const response = await axios.post(`${WEATHER_URL}/predict`, {
+        date,
+        district,
       });
-      setPrediction(response.data);
+      setWeatherPrediction(response.data);
     } catch (err) {
       if (err.response) {
-        setError(err.response.data.error); // Capture error message from the response
+        setError(err.response.data.error);
       } else {
         setError("An unexpected error occurred.");
       }
     }
   };
-  // new
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/predict", {
+      const response = await axios.post(`${BASE_URL}/predict`, {
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude),
         date: predictionDate,
@@ -51,12 +69,16 @@ const Home = () => {
       alert("Unable to fetch prediction. Please try again.");
     }
   };
+
   const useCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          setLatitude(lat);
+          setLongitude(lon);
+          await fetchDistrict(lat, lon);
         },
         (error) => {
           console.error("Error fetching location:", error);
@@ -68,10 +90,50 @@ const Home = () => {
     }
   };
 
+  const fetchDistrict = async (lat, lon) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/find_district`, {
+        latitude: lat,
+        longitude: lon,
+      });
+      const districtName = response.data.district;
+      setDistrict(districtName);
+
+      if (districtName === "Out of Telangana") {
+        setDistrictImage("");
+        return;
+      }
+
+      const imageKey = districtName.replace(/ /g, "_");
+      if (districtImages[imageKey]) {
+        setDistrictImage(districtImages[imageKey]);
+      } else {
+        setDistrictImage("");
+      }
+    } catch (error) {
+      console.error("Error fetching district:", error);
+      setDistrict("Unable to retrieve district");
+      setDistrictImage("");
+    }
+  };
+
+  const handleLatitudeChange = (e) => {
+    const lat = e.target.value;
+    setLatitude(lat);
+    fetchDistrict(lat, longitude);
+  };
+
+  const handleLongitudeChange = (e) => {
+    const lon = e.target.value;
+    setLongitude(lon);
+    fetchDistrict(latitude, lon);
+  };
+
   return (
     <div>
       <h2>Home</h2>
-      {/* new */}
+
+      {/* Weather Prediction Section */}
       <div>
         <h1>Weather Prediction</h1>
         <input
@@ -88,20 +150,21 @@ const Home = () => {
           required
         />
         <button onClick={getWeatherPrediction}>Get Weather Prediction</button>
-
         {error && <p style={{ color: "red" }}>{error}</p>}
-
-        {prediction && (
+        {weatherPrediction && (
           <div>
             <h2>
-              Prediction for {prediction.district} on {prediction.date}:
+              Prediction for {weatherPrediction.district} on{" "}
+              {weatherPrediction.date}:
             </h2>
-            <p>Predicted Rain: {prediction.predicted_rain.toFixed(2)} mm</p>
-            {/* Add more fields here if your model predicts additional parameters */}
+            <p>
+              Predicted Rain: {weatherPrediction.predicted_rain.toFixed(2)} mm
+            </p>
           </div>
         )}
       </div>
-      {/* new */}
+
+      {/* Main Form Section */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Crop Type:</label>
@@ -118,7 +181,7 @@ const Home = () => {
           <input
             type="text"
             value={latitude}
-            onChange={(e) => setLatitude(e.target.value)}
+            onChange={handleLatitudeChange}
             placeholder="Enter latitude"
           />
         </div>
@@ -127,14 +190,28 @@ const Home = () => {
           <input
             type="text"
             value={longitude}
-            onChange={(e) => setLongitude(e.target.value)}
+            onChange={handleLongitudeChange}
             placeholder="Enter longitude"
           />
           <button type="button" onClick={useCurrentLocation}>
             Use Current Location
           </button>
         </div>
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
+          <label>District:</label>
+          <p>{district || "District will be fetched automatically"}</p>
+        </div>
 
+        {districtImage && (
+          <div>
+            <img
+              src={districtImage}
+              alt={district}
+              style={{ width: "300px", height: "auto" }}
+            />
+            <p>{district}</p>
+          </div>
+        )}
         <div>
           <label>Farm Area (in acres):</label>
           <input
@@ -183,7 +260,7 @@ const Home = () => {
             onChange={(e) => setPredictionDate(e.target.value)}
           />
         </div>
-        <button type="submit">Get Irrigation</button>
+        <button type="submit">Get Prediction</button>
       </form>
 
       {predictionResult && (
