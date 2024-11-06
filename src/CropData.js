@@ -25,7 +25,7 @@ function CropData() {
     setShowDistrictImage(false);
 
     try {
-      const response = await axios.post('http://localhost:5000/predict', {
+      const response = await axios.post('http://localhost:5000/predict_yield', {
         district: district,
         date: date,
       });
