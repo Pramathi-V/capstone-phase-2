@@ -1,31 +1,32 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './CropData.css';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import "./CropData.css";
+import { DataContext } from "./DataContext";
 
 function CropData() {
-  const [district, setDistrict] = useState('');
-  const [date, setDate] = useState('');
-  const [cropType, setCropType] = useState('rice');
+  const { district, setDistrict } = useContext(DataContext); // Get district from context
+  const [date, setDate] = useState("");
+  const [cropType, setCropType] = useState("rice");
   const [prediction, setPrediction] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showDistrictImage, setShowDistrictImage] = useState(false);
 
   // Helper function to determine the season based on the month
   const getSeason = (month) => {
     if (month >= 5 && month <= 11) {
-      return 'Kharif'; // May to November
+      return "Kharif"; // May to November
     } else {
-      return 'Rabi'; // December to April
+      return "Rabi"; // December to April
     }
   };
 
   const handlePredict = async () => {
-    setError('');
+    setError("");
     setPrediction(null);
     setShowDistrictImage(false);
 
     try {
-      const response = await axios.post('http://localhost:5000/predict_yield', {
+      const response = await axios.post("http://localhost:5000/predict_yield", {
         district: district,
         date: date,
       });
@@ -33,7 +34,9 @@ function CropData() {
       setPrediction(response.data);
       setShowDistrictImage(true);
     } catch (err) {
-      setError('Error fetching prediction. Please check the district and date.');
+      setError(
+        "Error fetching prediction. Please check the district and date."
+      );
     }
   };
 
@@ -56,7 +59,7 @@ function CropData() {
     <div className="CropData">
       <div className="image-container">
         <img
-          src={require('./paddy-fields-1024x636.jpg')}
+          src={require("./paddy-fields-1024x636.jpg")}
           alt="Paddy Fields"
           className="paddy-image"
         />
@@ -87,15 +90,27 @@ function CropData() {
       {prediction && (
         <div className="results">
           <h2>Prediction Results:</h2>
-          {season === 'Kharif' ? (
+          {season === "Kharif" ? (
             <>
-              <p>Predicted Kharif Yield: {prediction.Predicted_Kharif_Yield.toFixed(2)}  (Tonne/Hectare)</p>
-              <p>Adjusted Kharif Yield: {prediction.Adjusted_Kharif_Yield.toFixed(2)} (Tonne/Hectare)</p>
+              <p>
+                Predicted Kharif Yield:{" "}
+                {prediction.Predicted_Kharif_Yield.toFixed(2)} (Tonne/Hectare)
+              </p>
+              <p>
+                Adjusted Kharif Yield:{" "}
+                {prediction.Adjusted_Kharif_Yield.toFixed(2)} (Tonne/Hectare)
+              </p>
             </>
           ) : (
             <>
-              <p>Predicted Rabi Yield: {prediction.Predicted_Rabi_Yield.toFixed(2)} (Tonne/Hectare)</p>
-              <p>Adjusted Rabi Yield: {prediction.Adjusted_Rabi_Yield.toFixed(2)} (Tonne/Hectare)</p>
+              <p>
+                Predicted Rabi Yield:{" "}
+                {prediction.Predicted_Rabi_Yield.toFixed(2)} (Tonne/Hectare)
+              </p>
+              <p>
+                Adjusted Rabi Yield: {prediction.Adjusted_Rabi_Yield.toFixed(2)}{" "}
+                (Tonne/Hectare)
+              </p>
             </>
           )}
 

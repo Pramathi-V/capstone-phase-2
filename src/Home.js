@@ -181,7 +181,9 @@ const Home = () => {
           >
             <option value="Nursery">Nursery</option>
             <option value="Transplanting">Transplanting</option>
-            <option value="Flowering">Flowering</option>
+            <option value="Tilling">Tilling</option>
+            <option value="Panical">Panical intiation</option>
+            <option value="Heading">Booting to heading</option>
             <option value="Mature">Mature</option>
           </select>
         </div>
