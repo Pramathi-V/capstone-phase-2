@@ -390,8 +390,7 @@ const Irrigation = () => {
         "http://localhost:5001/predict",
         {
           district: district,
-          date: date,
-          area: farmArea, // Pass area to the API if needed
+          date: date // Pass area to the API if needed
         }
       );
 
@@ -399,15 +398,13 @@ const Irrigation = () => {
         "http://localhost:5002/predict",
         {
           district: district,
-          date: date,
-          area: farmArea, // Pass area to the API if needed
+          date: date // Pass area to the API if needed
         }
       );
 
       const runoffResponse = await axios.post("http://localhost:5003/predict", {
         district: district,
-        date: date,
-        area: farmArea, // Pass area to the API if needed
+        date: date // Pass area to the API if needed
       });
 
       setPredictedValues({
@@ -504,6 +501,8 @@ const Irrigation = () => {
         <div>
           <h2>Net Irrigation</h2>
           <p>{netIrrigation} mm</p>
+          <h2>For entire farm Area</h2>
+          <p>{netIrrigation*farmArea}</p>
         </div>
       )}
     </div>
