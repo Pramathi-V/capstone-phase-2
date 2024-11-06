@@ -1,15 +1,3 @@
-// import React from "react";
-
-// const CropRecommendation = () => {
-//   return (
-//     <div>
-//       <h2>Crop Recommendation</h2>
-//       {/* Add form fields or content related to crop recommendation */}
-//     </div>
-//   );
-// };
-
-// export default CropRecommendation;
 import React, { useState } from "react";
 import growthSatge from "./assets/growth_stages.png";
 import rabiImage1 from "./assets/Rabi_Irrigation.png"; // Adjust the path to your Rabi image
@@ -31,22 +19,46 @@ const CropRecommendation = () => {
     if (season === "Rabi") {
       return (
         <>
-          <img src={rabiImageCrop} alt="Rabi Crop Details" style={{ width: '500px', margin: '10px' }} />
+          <img
+            src={rabiImageCrop}
+            alt="Rabi Crop Details"
+            style={{ width: "500px", margin: "10px" }}
+          />
           {/* <img src={growthSatge} alt="growth stages" style={{ width: '500px', margin: '10px' }} /> */}
           <br></br>
           <h4>Crop Weather Calander</h4>
-          <img src={rabiImage1} alt="Rabi Crop 1" style={{ height: '500px', margin: '10px' }} />
-          <img src={rabiImage2} alt="Rabi Crop 2" style={{ height: '500px', margin: '10px' }} />
+          <img
+            src={rabiImage1}
+            alt="Rabi Crop 1"
+            style={{ height: "500px", margin: "10px" }}
+          />
+          <img
+            src={rabiImage2}
+            alt="Rabi Crop 2"
+            style={{ height: "500px", margin: "10px" }}
+          />
         </>
       );
     } else if (season === "Kharif") {
       return (
         <>
-          <img src={kharifImageCrop} alt="Kharif Crop Details" style={{ width: '500px', margin: '10px' }} />
+          <img
+            src={kharifImageCrop}
+            alt="Kharif Crop Details"
+            style={{ width: "500px", margin: "10px" }}
+          />
           <br></br>
           <h4>Crop Weather Calander</h4>
-          <img src={kharifImage1} alt="Kharif Crop 1" style={{ height: '500px', margin: '10px' }} />
-          <img src={kharifImage2} alt="Kharif Crop 2" style={{ height: '500px', margin: '10px' }} />
+          <img
+            src={kharifImage1}
+            alt="Kharif Crop 1"
+            style={{ height: "500px", margin: "10px" }}
+          />
+          <img
+            src={kharifImage2}
+            alt="Kharif Crop 2"
+            style={{ height: "500px", margin: "10px" }}
+          />
         </>
       );
     }
@@ -60,7 +72,7 @@ const CropRecommendation = () => {
         id="season-select"
         value={season}
         onChange={handleSeasonChange}
-        style={{ margin: '10px 0', padding: '5px' }}
+        style={{ margin: "10px 0", padding: "5px" }}
       >
         <option value="Rabi">Rabi</option>
         <option value="Kharif">Kharif</option>

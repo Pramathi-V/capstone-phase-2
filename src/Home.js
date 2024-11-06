@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import { DataContext } from "./DataContext"; // Import the context
 
 // Import all images from the District_Map folder
 const importDistrictImages = () => {
@@ -22,45 +23,52 @@ const districtImages = importDistrictImages();
 
 const Home = () => {
   const navigate = useNavigate();
-  const [cropType, setCropType] = useState("Rice-Kharif");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [district, setDistrict] = useState("");
-  const [districtImage, setDistrictImage] = useState("");
-  const [farmArea, setFarmArea] = useState("");
-  const [predictionDate, setPredictionDate] = useState("");
-  const [predictionResult, setPredictionResult] = useState(null);
-  const [growthStage, setGrowthStage] = useState("");
 
-  const [date, setDate] = useState("");
-  const [error, setError] = useState("");
+  // Access context values and setters
+  const {
+    cropType,
+    setCropType,
+    latitude,
+    setLatitude,
+    longitude,
+    setLongitude,
+    district,
+    setDistrict,
+    districtImage,
+    setDistrictImage,
+    farmArea,
+    setFarmArea,
+    growthStage,
+    setGrowthStage,
+    predictionDate,
+    setPredictionDate,
+  } = useContext(DataContext);
+
+  // Set today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  // Ensure predictionDate is initialized
+  if (!predictionDate) setPredictionDate(getTodayDate());
 
   const DISTRCT_URL = "http://localhost:5006"; // Main server URL
 
-  const handleSubmit = async (e) => {
+  const handleDistrictSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(`${DISTRCT_URL}/predict`, {
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
-        date: predictionDate,
-      });
-      setPredictionResult(response.data);
-    } catch (error) {
-      console.error("Error fetching prediction:", error);
-      alert("Unable to fetch prediction. Please try again.");
-    }
+    await fetchDistrict(latitude, longitude);
   };
 
   const useCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          setLatitude(lat);
-          setLongitude(lon);
-          await fetchDistrict(lat, lon);
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
         },
         (error) => {
           console.error("Error fetching location:", error);
@@ -87,11 +95,7 @@ const Home = () => {
       }
 
       const imageKey = districtName.replace(/ /g, "_");
-      if (districtImages[imageKey]) {
-        setDistrictImage(districtImages[imageKey]);
-      } else {
-        setDistrictImage("");
-      }
+      setDistrictImage(districtImages[imageKey] || "");
     } catch (error) {
       console.error("Error fetching district:", error);
       setDistrict("Unable to retrieve district");
@@ -99,22 +103,10 @@ const Home = () => {
     }
   };
 
-  const handleLatitudeChange = (e) => {
-    const lat = e.target.value;
-    setLatitude(lat);
-    fetchDistrict(lat, longitude);
-  };
-
-  const handleLongitudeChange = (e) => {
-    const lon = e.target.value;
-    setLongitude(lon);
-    fetchDistrict(latitude, lon);
-  };
-
   return (
     <div>
       {/* Main Form Section */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleDistrictSubmit}>
         <div>
           <label>Crop Type:</label>
           <select
@@ -130,7 +122,7 @@ const Home = () => {
           <input
             type="text"
             value={latitude}
-            onChange={handleLatitudeChange}
+            onChange={(e) => setLatitude(e.target.value)}
             placeholder="Enter latitude"
           />
         </div>
@@ -139,7 +131,7 @@ const Home = () => {
           <input
             type="text"
             value={longitude}
-            onChange={handleLongitudeChange}
+            onChange={(e) => setLongitude(e.target.value)}
             placeholder="Enter longitude"
           />
           <div>
@@ -148,11 +140,19 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <div style={{ textAlign: "center", marginTop: "10px" }}>
-          <label>District:</label>
-          <p>{district || "District will be fetched automatically"}</p>
+
+        {/* New Submit button for fetching district */}
+        <div style={{ marginTop: "10px" }}>
+          <button onClick={handleDistrictSubmit}>Fetch District</button>
         </div>
 
+        {/* Display district and image only after clicking 'Fetch District' */}
+        {district && (
+          <div style={{ textAlign: "center", marginTop: "10px" }}>
+            <label>District:</label>
+            <p>{district}</p>
+          </div>
+        )}
         {districtImage && (
           <div>
             <img
@@ -160,9 +160,9 @@ const Home = () => {
               alt={district}
               style={{ width: "300px", height: "auto" }}
             />
-            <p>{district}</p>
           </div>
         )}
+
         <div>
           <label>Farm Area (in acres):</label>
           <input
@@ -194,15 +194,7 @@ const Home = () => {
             onChange={(e) => setPredictionDate(e.target.value)}
           />
         </div>
-        <button type="submit">Get Prediction</button>
       </form>
-
-      {predictionResult && (
-        <div>
-          <h3>Prediction Results:</h3>
-          <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
-        </div>
-      )}
 
       {/* Navigation Buttons */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>

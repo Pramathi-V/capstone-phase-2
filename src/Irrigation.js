@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { DataContext } from "./DataContext";
 
 const kharifIrrigationData = [
   {
@@ -352,16 +353,16 @@ const irrigationData = [
 ];
 
 const findIdealIrrigation = (month, stage) => {
-  const data = [...kharifIrrigationData, ...irrigationData]; // Combine both datasets for search
+  const data = [...kharifIrrigationData, ...irrigationData];
   const idealEntry = data.find(
     (entry) => entry.month === month && entry.stage === stage
   );
-  return idealEntry ? idealEntry.irrigation : 0; // Return irrigation amount or 0 if not found
+  return idealEntry ? idealEntry.irrigation : 0;
 };
 
 const Irrigation = () => {
   const [date, setDate] = useState("");
-  const [district, setDistrict] = useState("");
+  const { district, farmArea } = useContext(DataContext);
   const [predictedValues, setPredictedValues] = useState({
     predictedRain: "",
     predictedET: "",
@@ -372,10 +373,9 @@ const Irrigation = () => {
 
   const calculateNetIrrigation = () => {
     const month = new Date(date).toLocaleString("default", { month: "long" });
-    const stage = "Specify the stage based on your logic"; // Replace with logic to determine the stage
+    const stage = "Specify the stage based on your logic";
     const idealIrrigation = findIdealIrrigation(month, stage);
 
-    // Calculate net irrigation
     const netIrrigationValue =
       idealIrrigation -
       (predictedValues.predictedRain -
@@ -391,6 +391,7 @@ const Irrigation = () => {
         {
           district: district,
           date: date,
+          area: farmArea, // Pass area to the API if needed
         }
       );
 
@@ -399,12 +400,14 @@ const Irrigation = () => {
         {
           district: district,
           date: date,
+          area: farmArea, // Pass area to the API if needed
         }
       );
 
       const runoffResponse = await axios.post("http://localhost:5003/predict", {
         district: district,
         date: date,
+        area: farmArea, // Pass area to the API if needed
       });
 
       setPredictedValues({
@@ -412,13 +415,6 @@ const Irrigation = () => {
         predictedET: evapotranspirationResponse.data.predicted_et,
         predictedSR: runoffResponse.data.predicted_sr,
       });
-      // Calculate net irrigation here
-      // const month = new Date(date).toLocaleString('default', { month: 'long' });
-      // const stage = "Specify the stage based on your logic"; // You might want to get this value from user input or another source
-      // const idealIrrigation = findIdealIrrigation(month, stage);
-
-      // const netIrrigationValue = idealIrrigation - (precipitationResponse.data.predicted_rain - runoffResponse.data.predicted_sr - evapotranspirationResponse.data.predicted_et);
-      // setNetIrrigation(netIrrigationValue);
     } catch (error) {
       console.error("Error fetching predictions:", error);
     }
@@ -427,6 +423,7 @@ const Irrigation = () => {
   const handleModifyClick = () => {
     setEditable(!editable);
   };
+
   useEffect(() => {
     if (
       date &&
@@ -436,10 +433,10 @@ const Irrigation = () => {
     ) {
       calculateNetIrrigation();
     }
-  }, [predictedValues, date]); // Depend on predictedValues and date
+  }, [predictedValues, date]);
 
   useEffect(() => {
-    calculateNetIrrigation(); // Calculate net irrigation on initial load
+    calculateNetIrrigation();
   }, [date]);
 
   return (
@@ -450,12 +447,9 @@ const Irrigation = () => {
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
-      <input
-        type="text"
-        value={district}
-        onChange={(e) => setDistrict(e.target.value)}
-        placeholder="District"
-      />
+
+      <p>District: {district}</p>
+      <p>Area: {farmArea}</p>
       <button onClick={fetchPredictions}>Get Predictions</button>
 
       <div>
