@@ -24,7 +24,7 @@ const Pest_disease = () => {
 
       try {
         // Send POST request to Flask backend
-        const response = await axios.post("http://localhost:5000/Pest_disease", formData, {
+        const response = await axios.post("http://localhost:5010/Pest_disease", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
