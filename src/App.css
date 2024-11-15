@@ -12,7 +12,7 @@ nav ul {
   padding: 0;
   margin: 0;
   display: flex;
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 nav ul li {
@@ -54,7 +54,9 @@ form label {
   margin: 10px 0 5px;
 }
 
-form input, form select, form button {
+form input,
+form select,
+form button {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -63,7 +65,7 @@ form input, form select, form button {
 }
 
 form button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   cursor: pointer;
 }
