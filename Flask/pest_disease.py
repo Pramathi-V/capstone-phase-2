@@ -58,9 +58,9 @@ def pest_disease_detection():
             "rice leaf hopper", "rice shell pest", "thrips"
         ]
         predicted_pest_class = pest_classes[prediction].lower()
-        csv_file_path = r'D:\capstone-phase-2\Flask\pest_disease_table.csv'
+        csv_file_path = 'D:\capstone-phase-2\Flask\pest_disease_table.csv'
         solution = sol_to_disease(predicted_pest_class, csv_file_path)
-        model_path = r'D:\capstone-phase-2\Flask\convolutional_network.pth'
+        model_path = 'D:\capstone-phase-2\Flask\convolutional_network.pth'
         
         disease_prediction = predict_image(image_file, model_path)
         disease_solution = sol_to_disease(disease_prediction.lower(),csv_file_path)
