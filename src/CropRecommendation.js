@@ -65,7 +65,7 @@ const CropRecommendation = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Crop Recommendation</h2>
       <label htmlFor="season-select">Select Season:</label>
       <select
@@ -80,7 +80,7 @@ const CropRecommendation = () => {
 
       <p>Selected Season: {season}</p>
       <p>Here are some recommended crops based on current conditions:</p>
-      <div>
+      <div className="season-container">
         <h3>Recommended Crops</h3>
         {renderImages()}
       </div>

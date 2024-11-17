@@ -6,8 +6,8 @@ const Pest_disease = () => {
   const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
   const [pestClass, setPestClass] = useState(""); // State for predicted pest class
   const [solution, setSolution] = useState(""); // State for the solution
-  const [Disease,setDisease] = useState("");
-  const [Dsol,setSol] = useState("");
+  const [Disease, setDisease] = useState("");
+  const [Dsol, setSol] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
@@ -24,11 +24,15 @@ const Pest_disease = () => {
 
       try {
         // Send POST request to Flask backend
-        const response = await axios.post("http://localhost:5010/Pest_disease", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const response = await axios.post(
+          "http://localhost:5010/Pest_disease",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         // Assuming your response structure includes these properties
         const pestClass = response.data.pest; // Access pest class from response
@@ -45,8 +49,7 @@ const Pest_disease = () => {
         console.error("Error uploading the file:", error);
         setPestClass("Error detecting pest/disease. Please try again."); // Error message
         setSolution(""); // Clear previous solution on error
-      }
-      finally{
+      } finally {
         setLoading(false);
       }
     } else {
@@ -56,17 +59,30 @@ const Pest_disease = () => {
   };
 
   return (
-    <div className="pest-disease-container">
-      <h1>Pest & Disease Detection</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleFileChange} required />
-        <button type="submit">Submit</button>
-      </form>
-      {loading && <p>Loading........</p>}
-      {pestClass && <div className="result">Pest Class: {pestClass}</div>} {/* Display pest class result */}
-      {solution && <div className="solution">Solution: {solution}</div>} {/* Display solution result */}
-      {Disease && <div className="disease">Disease: {Disease}</div>} {/* Display solution result */}
-      {Dsol && <div className="dsol">Solution to disease: {Dsol}</div>} {/* Display solution result */}
+    <div>
+      <h2>Pest & Disease Detection</h2>
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+        {loading && <p>Loading........</p>}
+        {pestClass && (
+          <div className="result">Pest Class: {pestClass}</div>
+        )}{" "}
+        {/* Display pest class result */}
+        {solution && <div className="solution">Solution: {solution}</div>}{" "}
+        {/* Display solution result */}
+        {Disease && <div className="disease">Disease: {Disease}</div>}{" "}
+        {/* Display solution result */}
+        {Dsol && <div className="dsol">Solution to disease: {Dsol}</div>}{" "}
+        {/* Display solution result */}
+      </div>
     </div>
   );
 };

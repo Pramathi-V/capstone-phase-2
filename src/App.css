@@ -34,17 +34,25 @@ nav ul li a:hover {
 
 h2 {
   color: #333;
+  margin-left: 20px;
 }
 
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange elements vertically */
+  align-items: center; /* Center align items horizontally */
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.season-container {
+  display: flex;
+  flex-direction: column; /* Arrange elements vertically */
+  align-items: center; /* Center align items horizontally */
+}
 form {
   margin-top: 20px;
 }

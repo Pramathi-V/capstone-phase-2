@@ -1,9 +1,5 @@
 /* AnomalyDetection.css */
 
-.container {
-  text-align: center;
-}
-
 form {
   display: flex;
   flex-direction: column;

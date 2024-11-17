@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Home.css";
+
 import { DataContext } from "./DataContext"; // Import the context
 
 // Import all images from the District_Map folder
@@ -104,7 +104,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       {/* Main Form Section */}
       <form onSubmit={handleDistrictSubmit}>
         <div>

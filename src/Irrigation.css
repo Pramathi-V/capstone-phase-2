@@ -1,79 +1,88 @@
 /* Container styling */
-.Irrigation-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Title styling */
-  .Irrigation-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center;
-  }
-  
-  /* Label styling */
-  .Irrigation-container label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  /* Input field styling */
-  .Irrigation-container input[type="date"],
-  .Irrigation-container input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-    color: #333;
-  }
-  
-  .Irrigation-container input[type="number"]:disabled {
-    background-color: #e9ecef;
-  }
-  
-  /* Button styling */
-  .Irrigation-container button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .Irrigation-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .Irrigation-container button:focus {
-    outline: none;
-  }
-  
-  /* Irrigation requirement text styling */
-  .Irrigation-container h3 {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #333;
-    text-align: center;
-  }
-  
-  .Irrigation-container p {
-    font-size: 16px;
-    color: #555;
-    margin: 10px 0;
-  }
-  
+.irrigation-container {
+  display: flex;
+  position: relative; /* Positioning context for child elements */
+  height: 100vh; /* Full height of the viewport */
+  overflow: hidden; /* Hide any overflow caused by fixed positioning */
+}
+/* Title styling */
+.container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  margin: 20px;
+}
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  align-items: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+form input,
+form select,
+form button {
+  width: 300px; /* Sets all inputs, selects, and buttons to 300px width */
+  margin-bottom: 10px;
+  box-sizing: border-box; /* Ensures padding doesn't affect the width */
+}
+
+/* Label styling */
+.container label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* Input field styling */
+.container input[type="date"],
+.container input[type="number"] {
+  width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.container input[type="number"]:disabled {
+  background-color: #e9ecef;
+}
+
+/* Button styling */
+.container button {
+  width: 300px;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.container button:hover {
+  background-color: #4caf50;
+}
+
+.container button:focus {
+  outline: none;
+}
+
+/* Irrigation requirement text styling */
+.container h3 {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+.container p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+  text-align: left;
+  display: flex;
+}
