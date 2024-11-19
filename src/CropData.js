@@ -57,14 +57,14 @@ function CropData() {
 
   return (
     <div className="CropData">
-      <div className="image-container">
+      {/* <div className="image-container">
         <img
           src={require("./paddy-fields-1024x636.jpg")}
           alt="Paddy Fields"
           className="paddy-image"
         />
-      </div>
-      <div className="input-container">
+      </div> */}
+      <div className="container">
         <input
           type="text"
           placeholder="Enter District"
@@ -88,6 +88,7 @@ function CropData() {
       {error && <p className="error">{error}</p>}
 
       {prediction && (
+        <div className="container">
         <div className="results">
           <h2>Prediction Results:</h2>
           {season === "Kharif" ? (
@@ -123,6 +124,7 @@ function CropData() {
               />
             </div>
           )}
+        </div>
         </div>
       )}
     </div>

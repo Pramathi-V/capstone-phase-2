@@ -164,7 +164,7 @@ const Home = () => {
         )}
 
         <div>
-          <label>Farm Area (in acres):</label>
+          <label>Farm Area (in Hectares):</label>
           <input
             type="text"
             value={farmArea}

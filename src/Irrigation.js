@@ -447,7 +447,7 @@ const Irrigation = () => {
       />
 
       <p>District: {district}</p>
-      <p>Area: {farmArea}</p>
+      <p>Area (in Hectares): {farmArea}</p>
       <button onClick={fetchPredictions}>Get Predictions</button>
 
       <div className="prediction-container">

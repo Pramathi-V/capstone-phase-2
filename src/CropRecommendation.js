@@ -1,68 +1,21 @@
 import React, { useState } from "react";
-import growthSatge from "./assets/growth_stages.png";
-import rabiImage1 from "./assets/Rabi_Irrigation.png"; // Adjust the path to your Rabi image
-import rabiImage2 from "./assets/rabi_process.png"; // Adjust the path to your Rabi image
-import kharifImage2 from "./assets/kharif_process.png"; // Adjust the path to your Kharif image
-import kharifImage1 from "./assets/Kharif_weather.png"; // Adjust the path to your Kharif image
-import rabiImageCrop from "./assets/Rabi_crop.png"; // Adjust the path to your Rabi image
+import rabiImage1 from "./assets/Rabi_Irrigation.png";
+import rabiImage2 from "./assets/rabi_process.png";
+import kharifImage1 from "./assets/Kharif_weather.png";
+import kharifImage2 from "./assets/kharif_process.png";
+import rabiImageCrop from "./assets/Rabi_crop.png";
 import kharifImageCrop from "./assets/Kharif_crop.png";
+import ImageSlideshow from "./ImageSlideshow"; // Import the slideshow component
 
 const CropRecommendation = () => {
-  const [season, setSeason] = useState("Rabi"); // State to store the selected season
+  const [season, setSeason] = useState("Rabi");
 
   const handleSeasonChange = (event) => {
-    setSeason(event.target.value); // Update the state when the dropdown changes
+    setSeason(event.target.value);
   };
 
-  // Conditional rendering of images based on selected season
-  const renderImages = () => {
-    if (season === "Rabi") {
-      return (
-        <>
-          <img
-            src={rabiImageCrop}
-            alt="Rabi Crop Details"
-            style={{ width: "500px", margin: "10px" }}
-          />
-          {/* <img src={growthSatge} alt="growth stages" style={{ width: '500px', margin: '10px' }} /> */}
-          <br></br>
-          <h4>Crop Weather Calander</h4>
-          <img
-            src={rabiImage1}
-            alt="Rabi Crop 1"
-            style={{ height: "500px", margin: "10px" }}
-          />
-          <img
-            src={rabiImage2}
-            alt="Rabi Crop 2"
-            style={{ height: "500px", margin: "10px" }}
-          />
-        </>
-      );
-    } else if (season === "Kharif") {
-      return (
-        <>
-          <img
-            src={kharifImageCrop}
-            alt="Kharif Crop Details"
-            style={{ width: "500px", margin: "10px" }}
-          />
-          <br></br>
-          <h4>Crop Weather Calander</h4>
-          <img
-            src={kharifImage1}
-            alt="Kharif Crop 1"
-            style={{ height: "500px", margin: "10px" }}
-          />
-          <img
-            src={kharifImage2}
-            alt="Kharif Crop 2"
-            style={{ height: "500px", margin: "10px" }}
-          />
-        </>
-      );
-    }
-  };
+  const rabiImages = [rabiImageCrop, rabiImage1, rabiImage2];
+  const kharifImages = [kharifImageCrop, kharifImage1, kharifImage2];
 
   return (
     <div className="container">
@@ -78,11 +31,13 @@ const CropRecommendation = () => {
         <option value="Kharif">Kharif</option>
       </select>
 
-      <p>Selected Season: {season}</p>
-      <p>Here are some recommended crops based on current conditions:</p>
+      {/* <p>Selected Season: {season}</p> */}
+      {/* <p>Here are some recommended crops based on current conditions:</p> */}
+
       <div className="season-container">
         <h3>Recommended Crops</h3>
-        {renderImages()}
+        {/* Pass the appropriate images to the slideshow based on the selected season */}
+        <ImageSlideshow images={season === "Rabi" ? rabiImages : kharifImages} />
       </div>
     </div>
   );
