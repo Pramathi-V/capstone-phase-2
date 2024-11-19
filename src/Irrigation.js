@@ -509,7 +509,7 @@ const Irrigation = () => {
           <h2>Net Irrigation</h2>
           <p>{netIrrigation} mm</p>
           <h2>For entire farm Area</h2>
-          <p>{netIrrigation * farmArea}</p>
+          <p>{netIrrigation * farmArea * 10000} Litres</p>
         </div>
       )}
     </div>
