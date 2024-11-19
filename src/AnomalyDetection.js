@@ -59,30 +59,26 @@ const Pest_disease = () => {
   };
 
   return (
-    <div>
-      <h2>Pest & Disease Detection</h2>
-      <div className="container">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-          />
-          <button type="submit">Submit</button>
-        </form>
-        {loading && <p>Loading........</p>}
-        {pestClass && (
-          <div className="result">Pest Class: {pestClass}</div>
-        )}{" "}
-        {/* Display pest class result */}
-        {solution && <div className="solution">Solution: {solution}</div>}{" "}
-        {/* Display solution result */}
-        {Disease && <div className="disease">Disease: {Disease}</div>}{" "}
-        {/* Display solution result */}
-        {Dsol && <div className="dsol">Solution to disease: {Dsol}</div>}{" "}
-        {/* Display solution result */}
-      </div>
+    <div className="container">
+      <h2>Crop Growth Cycle (Preventative methods)</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {loading && <p>Loading........</p>}
+      {pestClass && <div className="result">Pest Class: {pestClass}</div>}{" "}
+      {/* Display pest class result */}
+      {solution && <div className="solution">Solution: {solution}</div>}{" "}
+      {/* Display solution result */}
+      {Disease && <div className="disease">Disease: {Disease}</div>}{" "}
+      {/* Display solution result */}
+      {Dsol && <div className="dsol">Solution to disease: {Dsol}</div>}{" "}
+      {/* Display solution result */}
     </div>
   );
 };

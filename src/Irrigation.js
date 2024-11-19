@@ -438,82 +438,80 @@ const Irrigation = () => {
   }, [date]);
 
   return (
-    <div>
+    <div className="container">
       <h2>Irrigation</h2>
-      <div className="container">
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
 
-        <p>District: {district}</p>
-        <p>Area: {farmArea}</p>
-        <button onClick={fetchPredictions}>Get Predictions</button>
+      <p>District: {district}</p>
+      <p>Area: {farmArea}</p>
+      <button onClick={fetchPredictions}>Get Predictions</button>
 
-        <div className="prediction-container">
-          <h2>Predicted Values (in mm)</h2>
+      <div className="prediction-container">
+        <h2>Predicted Values (in mm)</h2>
+        <div>
+          <label>Predicted Rain:</label>
           <div>
-            <label>Predicted Rain:</label>
-            <div>
-              <input
-                type="number"
-                value={predictedValues.predictedRain}
-                onChange={(e) =>
-                  setPredictedValues({
-                    ...predictedValues,
-                    predictedRain: e.target.value,
-                  })
-                }
-                disabled={!editable}
-              />
-            </div>
-          </div>
-          <div>
-            <div>
-              <label>Predicted Evapotranspiration:</label>
-            </div>
             <input
               type="number"
-              value={predictedValues.predictedET}
+              value={predictedValues.predictedRain}
               onChange={(e) =>
                 setPredictedValues({
                   ...predictedValues,
-                  predictedET: e.target.value,
+                  predictedRain: e.target.value,
                 })
               }
               disabled={!editable}
             />
           </div>
-          <div>
-            <div>
-              <label>Predicted Surface Runoff:</label>
-            </div>
-            <input
-              type="number"
-              value={predictedValues.predictedSR}
-              onChange={(e) =>
-                setPredictedValues({
-                  ...predictedValues,
-                  predictedSR: e.target.value,
-                })
-              }
-              disabled={!editable}
-            />
-          </div>
-          <button onClick={handleModifyClick}>
-            {editable ? "Lock Values" : "Modify Values"}
-          </button>
         </div>
-        {netIrrigation !== null && (
+        <div>
           <div>
-            <h2>Net Irrigation</h2>
-            <p>{netIrrigation} mm</p>
-            <h2>For entire farm Area</h2>
-            <p>{netIrrigation * farmArea}</p>
+            <label>Predicted Evapotranspiration:</label>
           </div>
-        )}
+          <input
+            type="number"
+            value={predictedValues.predictedET}
+            onChange={(e) =>
+              setPredictedValues({
+                ...predictedValues,
+                predictedET: e.target.value,
+              })
+            }
+            disabled={!editable}
+          />
+        </div>
+        <div>
+          <div>
+            <label>Predicted Surface Runoff:</label>
+          </div>
+          <input
+            type="number"
+            value={predictedValues.predictedSR}
+            onChange={(e) =>
+              setPredictedValues({
+                ...predictedValues,
+                predictedSR: e.target.value,
+              })
+            }
+            disabled={!editable}
+          />
+        </div>
+        <button onClick={handleModifyClick}>
+          {editable ? "Lock Values" : "Modify Values"}
+        </button>
       </div>
+      {netIrrigation !== null && (
+        <div>
+          <h2>Net Irrigation</h2>
+          <p>{netIrrigation} mm</p>
+          <h2>For entire farm Area</h2>
+          <p>{netIrrigation * farmArea}</p>
+        </div>
+      )}
     </div>
   );
 };
