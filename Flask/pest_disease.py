@@ -103,4 +103,4 @@ def sol_to_disease(disease_name, csv_file_path):
     return ''
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5010, debug=True)  # Set host and port
+    app.run(port=5010, debug=True)  # Set host and port
