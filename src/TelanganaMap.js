@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents, Marker, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import districtsGeoJSON from "./districts.json"; // Ensure this file is valid and in the project folder
+
 
 // Fix Leaflet marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -27,6 +29,14 @@ const TelanganaMap = () => {
 
     return position ? <Marker position={position}></Marker> : null;
   };
+
+    // Custom styling for Telangana's border
+    const geoJSONStyle = {
+      color: "black", // Black border
+      weight: 1, // Bolder line
+      opacity: 1,
+      fillOpacity: 0.1, // Light fill inside districts
+    };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -62,6 +72,7 @@ const TelanganaMap = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
+        <GeoJSON data={districtsGeoJSON} style={geoJSONStyle} />
         <LocationMarker />
       </MapContainer>
     </div>
