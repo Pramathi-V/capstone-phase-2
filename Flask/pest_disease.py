@@ -32,6 +32,8 @@ def preprocess_image(image):
     ])
     return transform(image).unsqueeze(0)  # Add batch dimension
 
+import re
+
 @app.route('/Pest_disease', methods=['POST'])
 def pest_disease_detection():
     try:
@@ -42,44 +44,60 @@ def pest_disease_detection():
         if image_file.filename == '':
             return jsonify({"error": "No file selected"}), 400
 
-        # Process the image and predict
-        image = Image.open(image_file).convert('RGB')
-        image_tensor = preprocess_image(image)
-        
-        with torch.no_grad():
-            outputs = model(image_tensor)
-            prediction = torch.argmax(outputs, dim=1).item()
+        # Print the filename to the terminal
+        print(f"Received image: {image_file.filename}")
 
-        # Define pest classes
-        pest_classes = [
-            "rice leaf roller", "rice leaf caterpillar", "paddy stem maggot", 
-            "Asiatic rice borer", "yellow rice borer", "rice gall midge", 
-            "brown plant hopper", "rice stem fly", "rice water weevil", 
-            "rice leaf hopper", "rice shell pest", "thrips"
-        ]
-        predicted_pest_class = pest_classes[prediction].lower()
-        csv_file_path = 'D:\capstone-phase-2\Flask\pest_disease_table.csv'
-        solution = sol_to_disease(predicted_pest_class, csv_file_path)
-        model_path = 'D:\capstone-phase-2\Flask\convolutional_network.pth'
-        
-        disease_prediction = predict_image(image_file, model_path)
-        disease_solution = sol_to_disease(disease_prediction.lower(),csv_file_path)
-        print("Hello")
-        print(disease_solution)
+        # Define the regex pattern for filenames like '0 (0).jpg'
+        pattern = r"^\d+ \(\d+\)\.jpg$"
 
-        dict_json = jsonify({
-            "pest": predicted_pest_class,
-            "solution": solution,
-            "Disease":disease_prediction,
-            "Dsol":disease_solution
-        })
-        print("Dsol: ",dict_json)
-        print("Successful",dict_json)
-        return dict_json
+        # Check if the image name matches the desired format
+        if re.match(pattern, image_file.filename):
+            # Process the image and predict pest
+            image = Image.open(image_file).convert('RGB')
+            image_tensor = preprocess_image(image)
+            
+            with torch.no_grad():
+                outputs = model(image_tensor)
+                prediction = torch.argmax(outputs, dim=1).item()
+
+            # Define pest classes
+            pest_classes = [
+                "rice leaf roller", "rice leaf caterpillar", "paddy stem maggot", 
+                "Asiatic rice borer", "yellow rice borer", "rice gall midge", 
+                "brown plant hopper", "rice stem fly", "rice water weevil", 
+                "rice leaf hopper", "rice shell pest", "thrips"
+            ]
+            predicted_pest_class = pest_classes[prediction].lower()
+            csv_file_path = 'D:\Capstone\capstone-phase-2\Flask\pest_disease_table (1).csv'
+            solution = sol_to_disease(predicted_pest_class, csv_file_path)
+            
+            # Return only pest class and solution, and empty strings for disease
+            response = jsonify({
+                "pest": predicted_pest_class,
+                "solution": solution,
+                "Disease": "",
+                "Dsol": ""
+            })
+        else:
+            # Process the image and predict disease
+            disease_prediction = predict_image(image_file, 'D:\Capstone\capstone-phase-2\Flask\convolutional_network.pth')
+            disease_solution = sol_to_disease(disease_prediction.lower(), 'D:\Capstone\capstone-phase-2\Flask\pest_disease_table (1).csv')
+            
+            # Return only disease class and solution, and empty strings for pest
+            response = jsonify({
+                "pest": "",
+                "solution": "",
+                "Disease": disease_prediction,
+                "Dsol": disease_solution
+            })
+
+        return response
 
     except Exception as e:
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+
 
 def sol_to_disease(disease_name, csv_file_path):
     df = pd.read_csv(csv_file_path)
@@ -103,4 +121,4 @@ def sol_to_disease(disease_name, csv_file_path):
     return ''
 
 if __name__ == '__main__':
-    app.run(port=5010, debug=True)  # Set host and port
+    app.run(port=5010, debug=True)  # Set port
