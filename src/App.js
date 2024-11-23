@@ -10,6 +10,9 @@ import AnomalyDetection from "./AnomalyDetection";
 import CropData from "./CropData";
 import backgroundImage from "./paddy-fields-1024x636.jpg"; // Import the image
 
+import TelanganaMap from "./TelanganaMap";
+
+
 function App() {
   return (
     <DataProvider>
@@ -28,6 +31,9 @@ function App() {
               <ul>
                 <li>
                   <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/map">Map</Link>
                 </li>
                 <li>
                   <Link to="/crop-recommendation">Crop Recommendation</Link>
@@ -49,6 +55,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/map" element={<TelanganaMap />} />
               <Route
                 path="/crop-recommendation"
                 element={<CropRecommendation />}
@@ -57,6 +64,7 @@ function App() {
               <Route path="/crop-growth-cycle" element={<CropGrowthCycle />} />
               <Route path="/anomaly-detection" element={<AnomalyDetection />} />
               <Route path="/crop-data" element={<CropData />} />
+
             </Routes>
           </div>
         </Router>
