@@ -23,10 +23,10 @@ from PIL import Image
 
 
 transform=transforms.Compose([
-        transforms.RandomRotation(10),      # rotate +/- 10 degrees
-        transforms.RandomHorizontalFlip(),  # reverse 50% of images
-        transforms.Resize(224),             # resize shortest side to 224 pixels
-        transforms.CenterCrop(224),         # crop longest side to 224 pixels at center
+        transforms.RandomRotation(10),      
+        transforms.RandomHorizontalFlip(),  
+        transforms.Resize(224),             
+        transforms.CenterCrop(224),         
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],
                              [0.229, 0.224, 0.225])
@@ -55,8 +55,8 @@ class ImageDataset(pl.LightningDataModule):
         self.path_label = path_label
         self.batch_size = batch_size
         self.transform = transforms.Compose([
-            transforms.Resize(224),             # resize shortest side to 224 pixels
-            transforms.CenterCrop(224),         # crop longest side to 224 pixels at center            
+            transforms.Resize(224),             
+            transforms.CenterCrop(224),         
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406],
                                  [0.229, 0.224, 0.225])
@@ -122,9 +122,8 @@ class DataModule(pl.LightningDataModule):
 
     def setup(self, stage=None):
         if stage == 'Test':
-            # Load the test set for the 'Test' stage
             test_set = datasets.ImageFolder(root=self.test_dir, transform=self.transform)
-            self.test_dataset = test_set  # Save the dataset for later use
+            self.test_dataset = test_set  
 
         else:
             dataset = datasets.ImageFolder(root=self.root_dir, transform=self.transform)
@@ -210,29 +209,21 @@ import torch.nn.functional as F
 class ConvolutionalNetwork(nn.Module):
     def __init__(self):
         super(ConvolutionalNetwork, self).__init__()
-        
-        # Define convolutional layers
+
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=6, kernel_size=3)
         self.conv2 = nn.Conv2d(in_channels=6, out_channels=16, kernel_size=3)
-        
-        # Define fully connected layers
-        # Ensure the input to fc1 matches 46656
+
         self.fc1 = nn.Linear(in_features=46656, out_features=120)
         self.fc2 = nn.Linear(in_features=120, out_features=84)
         self.fc3 = nn.Linear(in_features=84, out_features=20)
         self.fc4 = nn.Linear(in_features=20, out_features=10)
 
     def forward(self, x):
-        # Apply convolutional layers with pooling and activation
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2)
         x = F.relu(self.conv2(x))
         x = F.max_pool2d(x, 2)
-        
-        # Flatten the output for fully connected layers
-        x = x.view(x.size(0), -1)  # Make sure this results in a size of 46656
-        
-        # Apply fully connected layers
+        x = x.view(x.size(0), -1)  
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
@@ -251,11 +242,7 @@ def load_model(model_path):
     return loaded_model, device
 
 
-# Function to predict the class of an input image
-
 def predict_image(image_path, model_path):
-    #model_path = 'Flask\convolutional_network.pth'
-    #state_dict = torch.load(model_path, map_location='cpu')
     loaded_model = ConvolutionalNetwork()
     loaded_model.load_state_dict(torch.load(model_path))
     loaded_model.eval()
@@ -263,8 +250,8 @@ def predict_image(image_path, model_path):
     class_names = ['bacterial_leaf_blight','brown_spot','healthy','leaf_blast','leaf_scald','narrow_brown_spot','Neck_blast','Rice Hispa','Sheath Blight','Tungro']
     model, device = load_model(model_path)
     transform = transforms.Compose([
-        transforms.Resize(224),             # resize shortest side to 224 pixels
-        transforms.CenterCrop(224),         # crop longest side to 224 pixels at center
+        transforms.Resize(224),             
+        transforms.CenterCrop(224),         
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
@@ -275,32 +262,14 @@ def predict_image(image_path, model_path):
 
     with torch.no_grad():
         output = model(image)
-        prediction = torch.argmax(output, dim=1).item()  # Get the predicted class index
+        prediction = torch.argmax(output, dim=1).item()  
     predicted_class = class_names[prediction]
     return predicted_class
-
-
-
-
-# Example usage
-
-# model_path = r'Flask\\convolutional_network.pth'  # Path to the saved model
-# input_image_path = r'D:\\PES_Classes\\Sem7\\SMC\\capstone-phase-2\\Flask\\Screenshot 2024-11-07 215847.png'  # Path to the input image
-
-# Load the model
-#model, device = load_model(model_path)
-#class_names = ['bacterial_leaf_blight','brown_spot','healthy','leaf_blast','leaf_scald','narrow_brown_spot','Neck_blast','Rice Hispa','Sheath Blight','Tungro']
-
-# Predict the class of the input image
-# predicted_class = predict_image(input_image_path)
-# print(f"The predicted class for the input image is: {predicted_class}")
-
 
 import pandas as pd
 
 predicted_class = "neck_blast"
-disease_name = predicted_class.split("\\")[-1]  # Extract 'rice_hispa'
-
+disease_name = predicted_class.split("\\")[-1]  
 
 csv_file_path = r'D:\capstone-phase-2\Flask\pest_disease_table.csv'
 
