@@ -9,8 +9,9 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import districtsGeoJSON from "./districts.json"; // Ensure this file is valid and in the project folder
+import { DataContext } from "./DataContext"; // Import the DataContext
 
-
+// Fix Leaflet marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -22,14 +23,17 @@ L.Icon.Default.mergeOptions({
 });
 
 const TelanganaMap = () => {
-  const [position, setPosition] = useState(null); // Store clicked location
   const [map, setMap] = useState(null); // Store reference to the map
+  const { latitude, setLatitude, longitude, setLongitude } =
+    useContext(DataContext); // Access context
 
+  // Component to handle map events (click to set position and zoom)
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        setPosition([lat, lng]); // Update clicked position
+        setLatitude(lat); // Update latitude in context
+        setLongitude(lng); // Update longitude in context
         if (map) map.flyTo([lat, lng], 12); // Zoom in to clicked location
       },
     });
@@ -39,13 +43,13 @@ const TelanganaMap = () => {
     ) : null;
   };
 
-    // Custom styling for Telangana's border
-    const geoJSONStyle = {
-      color: "black", // Black border
-      weight: 1, // Bolder line
-      opacity: 1,
-      fillOpacity: 0.1, // Light fill inside districts
-    };
+  // Custom styling for Telangana's border
+  const geoJSONStyle = {
+    color: "black", // Black border
+    weight: 1, // Bolder line
+    opacity: 1,
+    fillOpacity: 0.1, // Light fill inside districts
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -72,10 +76,10 @@ const TelanganaMap = () => {
       </div>
 
       <MapContainer
-        center={[17.6, 79.1]} 
-        zoom={7} 
+        center={[17.6, 79.1]} // Approx center of Telangana
+        zoom={7} // Initial zoom level
         style={{ height: "500px", width: "100%" }}
-        whenCreated={setMap}
+        whenCreated={setMap} // Save reference to the map instance
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
