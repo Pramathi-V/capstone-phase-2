@@ -215,22 +215,18 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Load the CSV data
 crop_df = pd.read_csv(r'D:\\capstone-phase-2\\Flask\\Crop_yield.csv')
 weather_df = pd.read_csv(r'D:\\capstone-phase-2\\Flask\\combined_weather_timeline.csv')
 growth_stage_df = pd.read_csv(r'D:\\capstone-phase-2\\Flask\\merged_growth_stages.csv')
 future_weather_df = pd.read_csv(r'D:\\capstone-phase-2\\Flask\\2024_combined.csv')
 
-# Data preprocessing
 crop_df['Year'] = crop_df['Year'].str.split(' - ').str[0].astype(int)
 weather_df['Year'] = pd.to_datetime(weather_df['date']).dt.year
 training_data = pd.merge(crop_df, weather_df, left_on=['District', 'Year'], right_on=['district', 'Year'], how='inner')
 
-# Fill missing values in weather data
 weather_columns = ['rain', 'temp_min', 'temp_max', 'humidity_min', 'humidity_max', 'wind_speed_min', 'wind_speed_max']
 training_data[weather_columns] = training_data[weather_columns].fillna(training_data[weather_columns].mean())
 
-# Extract monthly optimum ranges for temperature, rain, and humidity
 monthly_optimums = {}
 for month in growth_stage_df['month'].unique():
     month_data = growth_stage_df[growth_stage_df['month'] == month]
@@ -272,35 +268,26 @@ def predict_yield():
     district = input_json.get("district")
     date = input_json.get("date")
     
-    # Convert date to datetime
     input_date = pd.to_datetime(date)
-    
-    # Separate historical and future data, then combine them
     historical_data = weather_df[weather_df['district'] == district]
     future_data = future_weather_df[future_weather_df['district'] == district]
     
-    # Filter data based on the date range
     combined_weather_data = pd.concat([historical_data, future_data], ignore_index=True)
     combined_weather_data['date'] = pd.to_datetime(combined_weather_data['date'])
     combined_weather_data.sort_values(by='date', inplace=True)
     
-    # Ensure the data is filtered up to the specified date
     combined_weather_data = combined_weather_data[combined_weather_data['date'] <= input_date]
-    
-    # Calculate 30-day rolling averages/sums on the combined data
+
     combined_weather_data['temp_max_30d_avg'] = combined_weather_data['temp_max'].rolling(window=30, min_periods=1).mean()
     combined_weather_data['rain_30d_sum'] = combined_weather_data['rain'].rolling(window=30, min_periods=1).sum()
     combined_weather_data['humidity_max_30d_avg'] = combined_weather_data['humidity_max'].rolling(window=30, min_periods=1).mean()
-    
-    # Get the latest entry for predictions
+
     latest_weather = combined_weather_data.iloc[-1]
     latest_weather['Month'] = latest_weather['date'].month_name()
-    
-    # Calculate weather scores
+
     latest_weather['Kharif_Weather_Score'] = calculate_weather_score(latest_weather)
     latest_weather['Rabi_Weather_Score'] = calculate_weather_score(latest_weather)
-    
-    # Prepare input for prediction
+
     input_features = latest_weather[features].values.reshape(1, -1)
     predicted_kharif_yield = kharif_model_rf.predict(input_features)[0]
     predicted_rabi_yield = rabi_model_rf.predict(input_features)[0]

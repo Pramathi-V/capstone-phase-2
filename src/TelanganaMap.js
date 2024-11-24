@@ -1,39 +1,50 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, useMapEvents, Marker, GeoJSON } from "react-leaflet";
+import React, { useState, useContext } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  Marker,
+  GeoJSON,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import districtsGeoJSON from "./districts.json"; 
+import districtsGeoJSON from "./districts.json"; // Ensure this file is valid and in the project folder
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 const TelanganaMap = () => {
-  const [position, setPosition] = useState(null); 
-  const [map, setMap] = useState(null); 
-
+  const [position, setPosition] = useState(null); // Store clicked location
+  const [map, setMap] = useState(null); // Store reference to the map
 
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        setPosition([lat, lng]); 
-        if (map) map.flyTo([lat, lng], 12); 
+        setPosition([lat, lng]); // Update clicked position
+        if (map) map.flyTo([lat, lng], 12); // Zoom in to clicked location
       },
     });
 
-    return position ? <Marker position={position}></Marker> : null;
+    return latitude && longitude ? (
+      <Marker position={[latitude, longitude]}></Marker>
+    ) : null;
   };
 
-    
+    // Custom styling for Telangana's border
     const geoJSONStyle = {
-      color: "black", 
-      weight: 1, 
+      color: "black", // Black border
+      weight: 1, // Bolder line
       opacity: 1,
-      fillOpacity: 0.1, 
+      fillOpacity: 0.1, // Light fill inside districts
     };
 
   return (
@@ -44,7 +55,7 @@ const TelanganaMap = () => {
           Latitude:
           <input
             type="text"
-            value={position ? position[0] : ""}
+            value={latitude || ""}
             readOnly
             style={{ marginLeft: "10px", width: "200px" }}
           />
@@ -53,7 +64,7 @@ const TelanganaMap = () => {
           Longitude:
           <input
             type="text"
-            value={position ? position[1] : ""}
+            value={longitude || ""}
             readOnly
             style={{ marginLeft: "10px", width: "200px" }}
           />
