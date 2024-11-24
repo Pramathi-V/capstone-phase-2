@@ -5,7 +5,7 @@ import kharifImage1 from "./assets/Kharif_weather.png";
 import kharifImage2 from "./assets/kharif_process.png";
 import rabiImageCrop from "./assets/Rabi_crop.png";
 import kharifImageCrop from "./assets/Kharif_crop.png";
-import ImageSlideshow from "./ImageSlideshow"; // Import the slideshow component
+import ImageSlideshow from "./ImageSlideshow";
 
 const CropRecommendation = () => {
   const [season, setSeason] = useState("Rabi");
@@ -36,7 +36,6 @@ const CropRecommendation = () => {
 
       <div className="season-container">
         <h3>Recommended Crops</h3>
-        {/* Pass the appropriate images to the slideshow based on the selected season */}
         <ImageSlideshow images={season === "Rabi" ? rabiImages : kharifImages} />
       </div>
     </div>

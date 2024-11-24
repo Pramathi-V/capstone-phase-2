@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { DataProvider } from "./DataContext"; // Import the DataProvider
+import { DataProvider } from "./DataContext"; 
 import Home from "./Home";
 import CropRecommendation from "./CropRecommendation";
 import Irrigation from "./Irrigation";
 import CropGrowthCycle from "./CropGrowthCycle";
 import AnomalyDetection from "./AnomalyDetection";
 import CropData from "./CropData";
-import backgroundImage from "./paddy-fields-1024x636.jpg"; // Import the image
+import backgroundImage from "./paddy-fields-1024x636.jpg"; 
 
 import TelanganaMap from "./TelanganaMap";
 

@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { MapContainer, TileLayer, useMapEvents, Marker, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import districtsGeoJSON from "./districts.json"; // Ensure this file is valid and in the project folder
+import districtsGeoJSON from "./districts.json"; 
 
-
-// Fix Leaflet marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
@@ -14,28 +12,28 @@ L.Icon.Default.mergeOptions({
 });
 
 const TelanganaMap = () => {
-  const [position, setPosition] = useState(null); // Store clicked location
-  const [map, setMap] = useState(null); // Store reference to the map
+  const [position, setPosition] = useState(null); 
+  const [map, setMap] = useState(null); 
 
-  // Component to handle map events (click to set position and zoom)
+
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        setPosition([lat, lng]); // Update clicked position
-        if (map) map.flyTo([lat, lng], 12); // Zoom in to clicked location
+        setPosition([lat, lng]); 
+        if (map) map.flyTo([lat, lng], 12); 
       },
     });
 
     return position ? <Marker position={position}></Marker> : null;
   };
 
-    // Custom styling for Telangana's border
+    
     const geoJSONStyle = {
-      color: "black", // Black border
-      weight: 1, // Bolder line
+      color: "black", 
+      weight: 1, 
       opacity: 1,
-      fillOpacity: 0.1, // Light fill inside districts
+      fillOpacity: 0.1, 
     };
 
   return (
@@ -63,10 +61,10 @@ const TelanganaMap = () => {
       </div>
 
       <MapContainer
-        center={[17.6, 79.1]} // Approx center of Telangana
-        zoom={7} // Initial zoom level
+        center={[17.6, 79.1]} 
+        zoom={7} 
         style={{ height: "500px", width: "100%" }}
-        whenCreated={setMap} // Save reference to the map instance
+        whenCreated={setMap}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

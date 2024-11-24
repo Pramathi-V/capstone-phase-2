@@ -2,9 +2,8 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { DataContext } from "./DataContext"; // Import the context
+import { DataContext } from "./DataContext"; 
 
-// Import all images from the District_Map folder
 const importDistrictImages = () => {
   const images = {};
   const context = require.context(
@@ -24,7 +23,6 @@ const districtImages = importDistrictImages();
 const Home = () => {
   const navigate = useNavigate();
 
-  // Access context values and setters
   const {
     cropType,
     setCropType,
@@ -44,7 +42,6 @@ const Home = () => {
     setPredictionDate,
   } = useContext(DataContext);
 
-  // Set today's date in YYYY-MM-DD format
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -53,10 +50,9 @@ const Home = () => {
     return `${year}-${month}-${day}`;
   };
 
-  // Ensure predictionDate is initialized
   if (!predictionDate) setPredictionDate(getTodayDate());
 
-  const DISTRCT_URL = "http://localhost:5006"; // Main server URL
+  const DISTRCT_URL = "http://localhost:5006"; 
 
   const handleDistrictSubmit = async (e) => {
     e.preventDefault();
@@ -141,12 +137,10 @@ const Home = () => {
           </div>
         </div>
 
-        {/* New Submit button for fetching district */}
         <div style={{ marginTop: "10px" }}>
           <button onClick={handleDistrictSubmit}>Fetch District</button>
         </div>
 
-        {/* Display district and image only after clicking 'Fetch District' */}
         {district && (
           <div style={{ textAlign: "center", marginTop: "10px" }}>
             <label>District:</label>
@@ -198,7 +192,6 @@ const Home = () => {
         </div>
       </form>
 
-      {/* Navigation Buttons */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         <button onClick={() => navigate("/crop-data")}>
           Maximum Crop Yield

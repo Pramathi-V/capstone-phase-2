@@ -1,11 +1,8 @@
 import React, { createContext, useState } from "react";
 
-// Create the context
 export const DataContext = createContext();
 
-// Create a provider component
 export const DataProvider = ({ children }) => {
-  // Define the state variables and their setters
   const [cropType, setCropType] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -15,7 +12,7 @@ export const DataProvider = ({ children }) => {
   const [growthStage, setGrowthStage] = useState("");
   const [predictionDate, setPredictionDate] = useState("");
 
-  // The context value to be passed to child components
+
   const contextValue = {
     cropType,
     setCropType,
