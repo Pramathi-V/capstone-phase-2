@@ -1,17 +1,16 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { DataProvider } from "./DataContext"; 
+import { DataProvider } from "./DataContext";
 import Home from "./Home";
 import CropRecommendation from "./CropRecommendation";
 import Irrigation from "./Irrigation";
 import CropGrowthCycle from "./CropGrowthCycle";
 import AnomalyDetection from "./AnomalyDetection";
 import CropData from "./CropData";
-import backgroundImage from "./paddy-fields-1024x636.jpg"; 
+import backgroundImage from "./paddy-fields-1024x636.jpg";
 
 import TelanganaMap from "./TelanganaMap";
-
 
 function App() {
   return (
@@ -30,10 +29,10 @@ function App() {
             <nav>
               <ul>
                 <li>
-                  <Link to="/">Home</Link>
+                  <Link to="/">Map</Link>
                 </li>
                 <li>
-                  <Link to="/map">Map</Link>
+                  <Link to="/home">Home</Link>
                 </li>
                 <li>
                   <Link to="/crop-recommendation">Crop Recommendation</Link>
@@ -54,8 +53,8 @@ function App() {
             </nav>
 
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/map" element={<TelanganaMap />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<TelanganaMap />} />
               <Route
                 path="/crop-recommendation"
                 element={<CropRecommendation />}
@@ -64,7 +63,6 @@ function App() {
               <Route path="/crop-growth-cycle" element={<CropGrowthCycle />} />
               <Route path="/anomaly-detection" element={<AnomalyDetection />} />
               <Route path="/crop-data" element={<CropData />} />
-
             </Routes>
           </div>
         </Router>

@@ -1,20 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { DataContext } from "./DataContext";
 
-import { DataContext } from "./DataContext"; 
-
+// Function to import district images dynamically
 const importDistrictImages = () => {
   const images = {};
   const context = require.context(
     "./District_Map",
     false,
-    /\.(png|jpe?g|svg)$/
+    /\.(png|jpe?g|svg)$/ // Match image file extensions
   );
+
   context.keys().forEach((item) => {
     const imageName = item.replace("./", "");
-    images[imageName.split(".")[0]] = context(item);
+    const imageKey = imageName.split(".")[0].replace(/ /g, "_"); // Replace spaces with underscores
+    images[imageKey] = context(item); // Map the sanitized image name to its file path
   });
+
   return images;
 };
 
@@ -22,7 +25,6 @@ const districtImages = importDistrictImages();
 
 const Home = () => {
   const navigate = useNavigate();
-
   const {
     cropType,
     setCropType,
@@ -52,7 +54,8 @@ const Home = () => {
 
   if (!predictionDate) setPredictionDate(getTodayDate());
 
-  const DISTRCT_URL = "http://localhost:5006"; 
+  const DISTRCT_URL = "http://localhost:5006";
+  const WEATHER_URL = "http://localhost:5009";
 
   const handleDistrictSubmit = async (e) => {
     e.preventDefault();
@@ -99,9 +102,34 @@ const Home = () => {
     }
   };
 
+  const fetchWeather = async () => {
+    if (!latitude || !longitude) {
+      alert("Please enter latitude and longitude first!");
+      return;
+    }
+
+    const roundedLat = latitude;
+    const roundedLon = longitude;
+
+    try {
+      const response = await axios.get(`${WEATHER_URL}/fetch_weather`, {
+        params: { lat: roundedLat, lon: roundedLon },
+      });
+
+      const weatherData = response.data;
+      setWeatherData(weatherData); // Update weather data state
+    } catch (error) {
+      console.error("Error fetching weather:", error);
+      alert("Failed to fetch weather data.");
+    }
+  };
+
+  // State to store the fetched weather data
+  const [weatherData, setWeatherData] = useState(null);
+
   return (
     <div className="container">
-      {/* Main Form Section */}
+      {/* Main Form starts here */}
       <form onSubmit={handleDistrictSubmit}>
         <div>
           <label>Crop Type:</label>
@@ -130,7 +158,7 @@ const Home = () => {
             onChange={(e) => setLongitude(e.target.value)}
             placeholder="Enter longitude"
           />
-          <div>
+          <div style={{ marginTop: "10px" }}>
             <button type="button" onClick={useCurrentLocation}>
               Use Current Location
             </button>
@@ -157,6 +185,23 @@ const Home = () => {
           </div>
         )}
 
+        <div style={{ marginTop: "10px" }}>
+          <button type="button" onClick={fetchWeather}>
+            Fetch Weather
+          </button>
+        </div>
+
+        {weatherData && (
+          <div style={{ textAlign: "center" }}>
+            <label>Weather Details:</label>
+            <p>Temperature: {weatherData.temperature}°C</p>
+            <p>Feels Like: {weatherData.feels_like}°C</p>
+            <p>Humidity: {weatherData.humidity}%</p>
+            <p>Description: {weatherData.weather}</p>
+            <p>Wind Speed: {weatherData.windspeed}m/s</p>
+          </div>
+        )}
+
         <div>
           <label>Farm Area (in Hectares):</label>
           <input
@@ -176,7 +221,7 @@ const Home = () => {
             <option value="Nursery">Nursery</option>
             <option value="Transplanting">Transplanting</option>
             <option value="Tilling">Tilling</option>
-            <option value="Panical">Panical intiation</option>
+            <option value="Panical">Panical initiation</option>
             <option value="Heading">Booting to heading</option>
             <option value="Mature">Mature</option>
           </select>
@@ -198,7 +243,7 @@ const Home = () => {
         </button>
         <button onClick={() => navigate("/irrigation")}>Irrigation</button>
         <button onClick={() => navigate("/crop-growth-cycle")}>
-          Preventative methods
+          Preventative Methods
         </button>
         <button onClick={() => navigate("/anomaly-detection")}>
           Anomaly Detection

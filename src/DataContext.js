@@ -12,7 +12,6 @@ export const DataProvider = ({ children }) => {
   const [growthStage, setGrowthStage] = useState("");
   const [predictionDate, setPredictionDate] = useState("");
 
-
   const contextValue = {
     cropType,
     setCropType,
