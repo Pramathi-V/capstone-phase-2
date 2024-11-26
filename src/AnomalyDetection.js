@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import axios from "axios"; 
+import axios from "axios";
 import "./AnomalyDetection.css";
 
 const Pest_disease = () => {
-  const [selectedFile, setSelectedFile] = useState(null); 
-  const [pestClass, setPestClass] = useState(""); 
-  const [solution, setSolution] = useState(""); 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [pestClass, setPestClass] = useState("");
+  const [solution, setSolution] = useState("");
   const [Disease, setDisease] = useState("");
   const [Dsol, setSol] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]); 
+    setSelectedFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -33,33 +33,31 @@ const Pest_disease = () => {
           }
         );
 
-        
-        const pestClass = response.data.pest; 
-        const solution = response.data.solution; 
+        const pestClass = response.data.pest;
+        const solution = response.data.solution;
         const disease = response.data.Disease;
         const sol = response.data.Dsol;
 
-        
         setPestClass(pestClass);
         setSolution(solution);
         setDisease(disease);
         setSol(sol);
       } catch (error) {
         console.error("Error uploading the file:", error);
-        setPestClass("Error detecting pest/disease. Please try again."); 
+        setPestClass("Error detecting pest/disease. Please try again.");
         setSolution("");
       } finally {
         setLoading(false);
       }
     } else {
-      setPestClass("No file selected"); 
-      setSolution(""); 
+      setPestClass("No file selected");
+      setSolution("");
     }
   };
 
   return (
     <div className="container">
-      <h2>Crop Growth Cycle (Preventative methods)</h2>
+      <h2>Anomaly Detection</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="file"
